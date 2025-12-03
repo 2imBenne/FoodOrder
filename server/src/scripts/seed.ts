@@ -3,17 +3,17 @@ import { hashPassword } from "../utils/password";
 import { toMoney } from "../utils/money";
 
 const categories = [
-  { name: "Mon Viet", description: "Dam da huong vi truyen thong" },
-  { name: "Do an nhanh", description: "Tien loi cho bua an ban ron" },
-  { name: "Do uong", description: "Giai khat moi luc" },
+  { name: "Món Việt", description: "Đậm đà hương vị truyền thống" },
+  { name: "Đồ ăn nhanh", description: "Tiện lợi cho bữa ăn bận rộn" },
+  { name: "Đồ uống", description: "Giải khát mọi lúc" },
 ];
 
 const dishes = [
   {
-    name: "Pho bo dac biet",
-    description: "Nuoc dung ham xuong 12 gio, bo tai chin",
-    price: 65000,
-    category: "Mon Viet",
+    name: "Phở Bò Đặc Biệt",
+    description: "Nước hầm xương 12 giờ, bò tái chín",
+    price: 35000,
+    category: "Món Việt",
     imageUrl:
       "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80",
     isFeatured: true,
@@ -69,7 +69,7 @@ const vouchers = [
 async function main() {
   await prisma.notification.deleteMany();
   await prisma.orderItem.deleteMany();
-  await prisma.order.deleteMany();
+  await prisma.orders.deleteMany();
   await prisma.dish.deleteMany();
   await prisma.category.deleteMany();
   await prisma.shippingZone.deleteMany();
@@ -80,9 +80,7 @@ async function main() {
   );
 
   for (const dish of dishes) {
-    const category = categoryRecords.find(
-      (c) => c.name === dish.category
-    );
+    const category = categoryRecords.find((c) => c.name === dish.category);
     if (!category) continue;
     await prisma.dish.create({
       data: {

@@ -45,7 +45,7 @@ model User {
   phone         String?
   address       String?
   role          Role             @default(USER)
-  orders        Order[]
+  orders        Orders[]
   notifications Notification[]
   createdAt     DateTime         @default(now())
   updatedAt     DateTime         @updatedAt
@@ -80,7 +80,7 @@ model ShippingZone {
   id        Int      @id @default(autoincrement())
   name      String   @unique
   fee       Decimal  @db.Decimal(10, 2)
-  orders    Order[]
+  orders    Orders[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -96,12 +96,12 @@ model Voucher {
   startDate    DateTime
   endDate      DateTime
   isActive     Boolean      @default(true)
-  orders       Order[]
+  orders       Orders[]
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
 }
 
-model Order {
+model Orders {
   id              Int          @id @default(autoincrement())
   userId          Int
   total           Decimal      @db.Decimal(10, 2)
@@ -130,7 +130,7 @@ model OrderItem {
   dishId    Int
   quantity  Int
   unitPrice Decimal @db.Decimal(10, 2)
-  order     Order   @relation(fields: [orderId], references: [id])
+  orders     Orders   @relation(fields: [orderId], references: [id])
   dish      Dish    @relation(fields: [dishId], references: [id])
 }
 
@@ -141,6 +141,6 @@ model Notification {
   status     NotificationStatus @default(UNREAD)
   orderId    Int?
   user       User               @relation(fields: [userId], references: [id])
-  order      Order?             @relation(fields: [orderId], references: [id])
+  orders      Orders?             @relation(fields: [orderId], references: [id])
   createdAt  DateTime           @default(now())
 }
