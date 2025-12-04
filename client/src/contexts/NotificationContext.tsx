@@ -21,17 +21,13 @@ type NotificationContextValue = {
   markAsRead: (id: number) => Promise<void>;
 };
 
-const NotificationContext = createContext<
-  NotificationContextValue | undefined
->(undefined);
+const NotificationContext = createContext<NotificationContextValue | undefined>(
+  undefined
+);
 
 const SOCKET_URL = import.meta.env.VITE_SOCKET_URL ?? api.defaults.baseURL!;
 
-export const NotificationProvider = ({
-  children,
-}: {
-  children: ReactNode;
-}) => {
+export const NotificationProvider = ({ children }: { children: ReactNode }) => {
   const { user } = useAuthContext();
   const [notifications, setNotifications] = useState<Notification[]>([]);
 
@@ -40,7 +36,9 @@ export const NotificationProvider = ({
       setNotifications([]);
       return;
     }
-    fetchNotifications().then(setNotifications).catch(() => undefined);
+    fetchNotifications()
+      .then(setNotifications)
+      .catch(() => undefined);
   }, [user]);
 
   useEffect(() => {
@@ -72,7 +70,7 @@ export const NotificationProvider = ({
   const markAsRead = async (id: number) => {
     await markNotification(id);
     setNotifications((prev) =>
-    prev.map((notif) =>
+      prev.map((notif) =>
         notif.id === id ? { ...notif, status: "READ" } : notif
       )
     );
@@ -94,6 +92,7 @@ export const NotificationProvider = ({
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useNotifications = () => {
   const ctx = useContext(NotificationContext);
   if (!ctx) {
